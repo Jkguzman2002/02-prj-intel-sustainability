@@ -5,144 +5,294 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Intel: Sustainability Through the Ages</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Beginner-friendly CSS for horizontal card scrolling */
+    .timeline-container {
+      /* This makes the section horizontally scrollable */
+      display: flex;
+      overflow-x: auto;
+      /* Hide vertical scrollbar */
+      overflow-y: hidden;
+      /* Add some space below */
+      margin-bottom: 24px;
+      /* Prevent wrapping to next line */
+      white-space: nowrap;
+      /* Optional: smooth scrolling */
+      scroll-behavior: smooth;
+      /* Set a fixed height for the cards */
+      height: 350px;
+      /* Add a little padding for looks */
+      padding: 16px 0;
+    }
+    .timeline-card {
+      /* Each card is a vertical box */
+      flex: 0 0 250px; /* fixed width for each card */
+      background: #f5f5f5;
+      border-radius: 8px;
+      margin: 0 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      /* Add a little space inside the card */
+      padding: 16px;
+      /* Prevent shrinking */
+      min-width: 250px;
+      max-width: 250px;
+      /* For smooth scrolling */
+      scroll-snap-align: start;
+      /* Make sure text stays inside the card and doesn't overflow */
+      box-sizing: border-box;
+      height: 100%;
+      overflow: hidden;
+      position: relative; /* Needed for overlay positioning */
+      cursor: pointer; /* Show pointer on hover */
+    }
+    .timeline-card p {
+      /* Ensure paragraphs wrap and fit inside the card */
+      word-break: break-word;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      /* Optional: limit height and allow scrolling if text is too long */
+      max-height: 120px;
+      overflow-y: auto;
+      width: 100%;
+      margin: 8px 0 0 0;
+      /* Hide the paragraph by default, will show in overlay */
+      display: none;
+    }
+    /* Overlay for showing paragraph text on hover */
+    .timeline-card .card-overlay {
+      display: none; /* Hidden by default */
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 104, 181, 0.85); /* Soft blue overlay */
+      color: white;
+      border-radius: 8px;
+      padding: 16px;
+      box-sizing: border-box;
+      z-index: 2;
+      /* For smooth fade-in */
+      opacity: 0;
+      transition: opacity 0.2s;
+      font-family: 'intel-clear', 'tahoma', Helvetica, 'helvetica', Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .timeline-card:hover .card-overlay {
+      display: flex;
+      opacity: 1;
+    }
+    .timeline-container::-webkit-scrollbar {
+      height: 10px;
+    }
+    .timeline-container::-webkit-scrollbar-thumb {
+      background: #ccc;
+      border-radius: 5px;
+    }
+    /* Show only 4 cards at a time (container width) */
+    @media (min-width: 1000px) {
+      .timeline-container {
+        width: 1048px; /* 4 cards * 250px + 5*12px margin */
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+    /* Responsive: on small screens, allow more scrolling */
+    @media (max-width: 999px) {
+      .timeline-container {
+        width: 100vw;
+      }
+    }
+  </style>
 </head>
 <body style="margin: 0;">
 
-  <!-- Large blue header with no padding and increased height -->
-  <!-- The header uses a div with a background color, no padding, and a larger height -->
-  <div style="background-color: #0068b5; color: white; display: flex; align-items: center; height: 100px; margin: 0;">
-    <!-- Intel logo on the left -->
-    <img src="img/intel-header-logo.svg" alt="Intel Logo" style="height: 60px; margin-left: 16px; margin-right: 20px;">
+  <!-- Large blue header with centered logo, heading, and paragraph -->
+  <!-- The content is centered vertically and horizontally in the blue box -->
+  <div style="background-color: #0068b5; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 260px; margin: 0; text-align: center;">
+    <!-- Centered Intel logo, now a little smaller -->
+    <img src="img/intel-header-logo.svg" alt="Intel Logo" style="height: 28px; margin-bottom: 16px;">
+    <!-- Large, bold heading -->
+    <h1 style="font-family: 'intel-one', 'intel-clear', Helvetica, Arial, sans-serif; font-size: 2.5em; font-weight: bold; margin: 0;">
+      Sustainability Through the Ages
+    </h1>
+    <!-- Light blue divider between heading and paragraph -->
+    <div style="width: 60px; height: 4px; background: #7ec6f7; border-radius: 2px; margin: 18px 0 0 0;"></div>
+    <!-- Centered subheading/description -->
+    <p style="font-family: 'intel-clear', 'tahoma', Helvetica, 'helvetica', Arial, sans-serif; margin-top: 16px; max-width: 600px;">
+      Explore Intel's journey through time, discovering how our commitment
+      to innovation has shaped a more sustainable future for technology 
+      and our planet.
+    </p>
   </div>
 
   <!-- Header / Hero Section -->
   <header>
     <div>
-      <!-- Main Heading -->
-      <h1>
-        Sustainability Through the Ages
-      </h1>
-
-      <!-- Subheading / Description -->
-      <p>
-        Explore Intel's journey through time, discovering how our commitment
-        to innovation has shaped a more sustainable future for technology 
-        and our planet.
-      </p>
+      <!-- Main Heading and paragraph moved to blue header above -->
+      <!-- ...existing code... -->
     </div>
   </header>
 
   <!-- Timeline Cards Section -->
+  <!-- We use a container div for horizontal scrolling and each card is a child div -->
   <section>
-
-    <!-- Card 1: 1968 -->
-    <div>
-      <h2>1968</h2>
-      <h3>Intel Founded</h3>
-      <img src="img/1.jpg" alt="Placeholder Image" />
-      <p>
-        Robert Noyce and Gordon Moore rename the newly formed company 
-        NM Electronics to Intel Corporation, laying the foundation for 
-        decades of technological innovation.
-      </p>
-    </div>
-
-    <!-- Card 2: 1971 -->
-    <div>
-      <h2>1971</h2>
-      <h3>First Microprocessor</h3>
-      <img src="img/2.jpg" alt="Placeholder Image" />
-      <p>
-        Intel debuts the 4004, the world's first commercial microprocessor, 
-        igniting the microprocessor revolution and propelling the future 
-        of computing devices.
-      </p>
-    </div>
-
-    <!-- Card 3: 1978 -->
-    <div>
-      <h2>1978</h2>
-      <h3>8086 Processor</h3>
-      <img src="img/3.jpg" alt="Placeholder Image" />
-      <p>
-        Launch of the 8086 processor, establishing the x86 architecture 
-        that drives countless PCs and servers in the modern era.
-      </p>
-    </div>
-
-    <!-- Card 4: 1985 -->
-    <div>
-      <h2>1985</h2>
-      <h3>386 Processor</h3>
-      <img src="img/4.jpg" alt="Placeholder Image" />
-      <p>
-        Intel introduces the 386 processor with 32-bit architecture, 
-        ushering in a new era of performance and multitasking for 
-        personal computers.
-      </p>
-    </div>
-
-    <!-- Card 5: 2006 -->
-    <div>
-      <h2>2006</h2>
-      <h3>Peak GHG Emissions</h3>
-      <img src="https://placehold.co/250x100" alt="Placeholder Image" />
-      <p>
-        This year marks Intel's highest annual greenhouse gas emissions 
-        for operations. Over subsequent years, Intel invests heavily in 
-        chemical abatement, renewable energy, and energy-efficient 
-        manufacturing to reverse this trend.
-      </p>
-    </div>
-
-    <!-- Card 6: 2020 -->
-    <div>
-      <h2>2020</h2>
-      <h3>RISE Strategy</h3>
-      <img src="https://placehold.co/250x100" alt="Placeholder Image" />
-      <p>
-        Intel launches its RISE (Responsible, Inclusive, Sustainable, 
-        Enabling) strategy and 2030 goals, aiming to drive industry-wide 
-        progress on climate action, water stewardship, and waste reduction.
-      </p>
-    </div>
-
-    <!-- Card 7: 2022 -->
-    <div>
-      <h2>2022</h2>
-      <h3>Net-Zero By 2040</h3>
-      <img src="https://placehold.co/250x100" alt="Placeholder Image" />
-      <p>
-        Intel announces its commitment to achieve net-zero greenhouse 
-        gas emissions (Scope 1 and 2) across its global operations 
-        by 2040, building on years of environmental initiatives.
-      </p>
-    </div>
-
-    <!-- Card 8: 2023 -->
-    <div>
-      <h2>2023</h2>
-      <h3>Renewable Electricity</h3>
-      <img src="https://placehold.co/250x100" alt="Placeholder Image" />
-      <p>
-        The company achieves 99% renewable electricity usage worldwide, 
-        helping to drastically lower carbon emissions and driving progress 
-        toward Intel's long-term sustainability goals.
-      </p>
-    </div>
-
-    <!-- Card 9: 2024 -->
-    <div>
-      <h2>2024</h2>
-      <h3>Sustainability Summit</h3>
-      <img src="https://placehold.co/250x100" alt="Placeholder Image" />
-      <p>
-        Intel hosts its first Sustainability Summit, uniting suppliers, 
-        government officials, and industry leaders to collaborate on 
-        next-generation sustainable semiconductor manufacturing.
-      </p>
+    <!-- Add a comment to help students understand -->
+    <!-- The cards below are shown in a horizontal row. Scroll to see more cards. -->
+    <div class="timeline-container">
+      <!-- Card 1: 1968 -->
+      <div class="timeline-card">
+        <h2 style="font-family: 'intel-one', 'intel-clear', Helvetica, Arial, sans-serif;">1968</h2>
+        <h3 style="font-family: 'intel-one', 'intel-clear', Helvetica, Arial, sans-serif;">Intel Founded</h3>
+        <img src="img/1.jpg" alt="Placeholder Image" style="width: 100%; border-radius: 4px;">
+        <p style="font-family: 'intel-clear', 'tahoma', Helvetica, 'helvetica', Arial, sans-serif;">
+          Robert Noyce and Gordon Moore rename the newly formed company 
+          NM Electronics to Intel Corporation, laying the foundation for 
+          decades of technological innovation.
+        </p>
+        <!-- Overlay shown on hover -->
+        <div class="card-overlay">
+          Robert Noyce and Gordon Moore rename the newly formed company 
+          NM Electronics to Intel Corporation, laying the foundation for 
+          decades of technological innovation.
+        </div>
+      </div>
+      <!-- Card 2: 1971 -->
+      <div class="timeline-card">
+        <h2 style="font-family: 'intel-one', 'intel-clear', Helvetica, Arial, sans-serif;">1971</h2>
+        <h3 style="font-family: 'intel-one', 'intel-clear', Helvetica, Arial, sans-serif;">First Microprocessor</h3>
+        <img src="img/2.jpg" alt="Placeholder Image" style="width: 100%; border-radius: 4px;">
+        <p style="font-family: 'intel-clear', 'tahoma', Helvetica, 'helvetica', Arial, sans-serif;">
+          Intel debuts the 4004, the world's first commercial microprocessor, 
+          igniting the microprocessor revolution and propelling the future 
+          of computing devices.
+        </p>
+        <div class="card-overlay">
+          Intel debuts the 4004, the world's first commercial microprocessor, 
+          igniting the microprocessor revolution and propelling the future 
+          of computing devices.
+        </div>
+      </div>
+      <!-- Card 3: 1978 -->
+      <div class="timeline-card">
+        <h2 style="font-family: 'intel-one', 'intel-clear', Helvetica, Arial, sans-serif;">1978</h2>
+        <h3 style="font-family: 'intel-one', 'intel-clear', Helvetica, Arial, sans-serif;">8086 Processor</h3>
+        <img src="img/3.jpg" alt="Placeholder Image" style="width: 100%; border-radius: 4px;">
+        <p style="font-family: 'intel-clear', 'tahoma', Helvetica, 'helvetica', Arial, sans-serif;">
+          Launch of the 8086 processor, establishing the x86 architecture 
+          that drives countless PCs and servers in the modern era.
+        </p>
+        <div class="card-overlay">
+          Launch of the 8086 processor, establishing the x86 architecture 
+          that drives countless PCs and servers in the modern era.
+        </div>
+      </div>
+      <!-- Card 4: 1985 -->
+      <div class="timeline-card">
+        <h2 style="font-family: 'intel-one', 'intel-clear', Helvetica, Arial, sans-serif;">1985</h2>
+        <h3 style="font-family: 'intel-one', 'intel-clear', Helvetica, Arial, sans-serif;">386 Processor</h3>
+        <img src="img/4.jpg" alt="Placeholder Image" style="width: 100%; border-radius: 4px;">
+        <p style="font-family: 'intel-clear', 'tahoma', Helvetica, 'helvetica', Arial, sans-serif;">
+          Intel introduces the 386 processor with 32-bit architecture, 
+          ushering in a new era of performance and multitasking for 
+          personal computers.
+        </p>
+        <div class="card-overlay">
+          Intel introduces the 386 processor with 32-bit architecture, 
+          ushering in a new era of performance and multitasking for 
+          personal computers.
+        </div>
+      </div>
+      <!-- Card 5: 2006 -->
+      <div class="timeline-card">
+        <h2 style="font-family: 'intel-one', 'intel-clear', Helvetica, Arial, sans-serif;">2006</h2>
+        <h3 style="font-family: 'intel-one', 'intel-clear', Helvetica, Arial, sans-serif;">Peak GHG Emissions</h3>
+        <img src="https://placehold.co/250x100" alt="Placeholder Image" style="width: 100%; border-radius: 4px;">
+        <p style="font-family: 'intel-clear', 'tahoma', Helvetica, 'helvetica', Arial, sans-serif;">
+          This year marks Intel's highest annual greenhouse gas emissions 
+          for operations. Over subsequent years, Intel invests heavily in 
+          chemical abatement, renewable energy, and energy-efficient 
+          manufacturing to reverse this trend.
+        </p>
+        <div class="card-overlay">
+          This year marks Intel's highest annual greenhouse gas emissions 
+          for operations. Over subsequent years, Intel invests heavily in 
+          chemical abatement, renewable energy, and energy-efficient 
+          manufacturing to reverse this trend.
+        </div>
+      </div>
+      <!-- Card 6: 2020 -->
+      <div class="timeline-card">
+        <h2 style="font-family: 'intel-one', 'intel-clear', Helvetica, Arial, sans-serif;">2020</h2>
+        <h3 style="font-family: 'intel-one', 'intel-clear', Helvetica, Arial, sans-serif;">RISE Strategy</h3>
+        <img src="https://placehold.co/250x100" alt="Placeholder Image" style="width: 100%; border-radius: 4px;">
+        <p style="font-family: 'intel-clear', 'tahoma', Helvetica, 'helvetica', Arial, sans-serif;">
+          Intel launches its RISE (Responsible, Inclusive, Sustainable, 
+          Enabling) strategy and 2030 goals, aiming to drive industry-wide 
+          progress on climate action, water stewardship, and waste reduction.
+        </p>
+        <div class="card-overlay">
+          Intel launches its RISE (Responsible, Inclusive, Sustainable, 
+          Enabling) strategy and 2030 goals, aiming to drive industry-wide 
+          progress on climate action, water stewardship, and waste reduction.
+        </div>
+      </div>
+      <!-- Card 7: 2022 -->
+      <div class="timeline-card">
+        <h2 style="font-family: 'intel-one', 'intel-clear', Helvetica, Arial, sans-serif;">2022</h2>
+        <h3 style="font-family: 'intel-one', 'intel-clear', Helvetica, Arial, sans-serif;">Net-Zero By 2040</h3>
+        <img src="https://placehold.co/250x100" alt="Placeholder Image" style="width: 100%; border-radius: 4px;">
+        <p style="font-family: 'intel-clear', 'tahoma', Helvetica, 'helvetica', Arial, sans-serif;">
+          Intel announces its commitment to achieve net-zero greenhouse 
+          gas emissions (Scope 1 and 2) across its global operations 
+          by 2040, building on years of environmental initiatives.
+        </p>
+        <div class="card-overlay">
+          Intel announces its commitment to achieve net-zero greenhouse 
+          gas emissions (Scope 1 and 2) across its global operations 
+          by 2040, building on years of environmental initiatives.
+        </div>
+      </div>
+      <!-- Card 8: 2023 -->
+      <div class="timeline-card">
+        <h2 style="font-family: 'intel-one', 'intel-clear', Helvetica, Arial, sans-serif;">2023</h2>
+        <h3 style="font-family: 'intel-one', 'intel-clear', Helvetica, Arial, sans-serif;">Renewable Electricity</h3>
+        <img src="https://placehold.co/250x100" alt="Placeholder Image" style="width: 100%; border-radius: 4px;">
+        <p style="font-family: 'intel-clear', 'tahoma', Helvetica, 'helvetica', Arial, sans-serif;">
+          The company achieves 99% renewable electricity usage worldwide, 
+          helping to drastically lower carbon emissions and driving progress 
+          toward Intel's long-term sustainability goals.
+        </p>
+        <div class="card-overlay">
+          The company achieves 99% renewable electricity usage worldwide, 
+          helping to drastically lower carbon emissions and driving progress 
+          toward Intel's long-term sustainability goals.
+        </div>
+      </div>
+      <!-- Card 9: 2024 -->
+      <div class="timeline-card">
+        <h2 style="font-family: 'intel-one', 'intel-clear', Helvetica, Arial, sans-serif;">2024</h2>
+        <h3 style="font-family: 'intel-one', 'intel-clear', Helvetica, Arial, sans-serif;">Sustainability Summit</h3>
+        <img src="https://placehold.co/250x100" alt="Placeholder Image" style="width: 100%; border-radius: 4px;">
+        <p style="font-family: 'intel-clear', 'tahoma', Helvetica, 'helvetica', Arial, sans-serif;">
+          Intel hosts its first Sustainability Summit, uniting suppliers, 
+          government officials, and industry leaders to collaborate on 
+          next-generation sustainable semiconductor manufacturing.
+        </p>
+        <div class="card-overlay">
+          Intel hosts its first Sustainability Summit, uniting suppliers, 
+          government officials, and industry leaders to collaborate on 
+          next-generation sustainable semiconductor manufacturing.
+        </div>
+      </div>
     </div>
   </section>
-  <p>Scroll to view timeline | Hover over cards to learn more!</p>
+  <p style="font-family: 'intel-clear', 'tahoma', Helvetica, 'helvetica', Arial, sans-serif;">Scroll to view timeline | Hover over cards to learn more!</p>
 </body>
 </html>

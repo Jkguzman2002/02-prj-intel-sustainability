@@ -53,10 +53,10 @@
       cursor: pointer;
     }
     .timeline-card {
-      flex: 0 0 250px; /* Slightly bigger cards */
+      flex: 0 0 250px;
       min-width: 250px;
       max-width: 250px;
-      height: 330px;   /* Slightly bigger height */
+      height: 250px; /* Square card */
       background: #f5f5f5;
       border-radius: 8px;
       margin: 0 12px;
@@ -72,25 +72,40 @@
     }
     .timeline-card-content {
       width: 100%;
-      height: 50%;
+      height: auto;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
-      /* Remove any extra space below content */
       margin-bottom: 0;
       padding-bottom: 0;
-      /* Remove any space that might push content away from the image */
-      flex-grow: 0;
-      flex-shrink: 0;
+      margin-top: 0;
+      padding-top: 0;
+      gap: 8px; /* Add more space between headers */
+      padding-left: 8px;
+      padding-right: 8px;
+      padding-top: 12px;
+      padding-bottom: 4px;
+    }
+    .timeline-card h2 {
+      color: #0068b5;
+      margin-bottom: 6px; /* More space below h2 */
+      margin-top: 0;
+      padding: 2px 0;
+    }
+    .timeline-card h3 {
+      color: #333333;
+      margin-top: 0;
+      margin-bottom: 6px; /* More space below h3 */
+      padding: 2px 0;
     }
     .timeline-card img {
       width: 100%;
-      height: 50%;
-      object-fit: cover; /* Image fills the bottom half, cropping if needed */
-      border-radius: 0 0 4px 4px; /* Only round the bottom corners */
-      margin: 0; /* Remove any margin */
-      padding: 0; /* Remove any padding */
+      height: 60%; /* Make image larger inside the card */
+      object-fit: cover;
+      border-radius: 0 0 4px 4px;
+      margin: 0;
+      padding: 4px 0 0 0;
       display: block;
       box-sizing: border-box;
     }
@@ -186,13 +201,15 @@
     }
     .timeline-card h2 {
       color: #0068b5; /* Blue for h2 */
-      margin-bottom: 2px; /* Even less space below h2 */
+      margin-bottom: 0; /* Remove space below h2 */
       margin-top: 0;
+      padding: 0;
     }
     .timeline-card h3 {
       color: #333333; /* Dark gray for h3 */
       margin-top: 0;
-      margin-bottom: 2px; /* Even less space below h3 */
+      margin-bottom: 0; /* Remove space below h3 */
+      padding: 0;
     }
     /* Hide the paragraph text inside each card by default */
     .timeline-card p {
@@ -221,18 +238,38 @@
         width: 98vw;
         min-width: 0;
         max-width: 99vw;
-        height: auto;
+        height: 98vw; /* Square on small screens */
         margin: 16px 0;
         display: flex;
       }
       .timeline-card-content {
         width: 100%;
         height: auto;
+        margin-bottom: 0;
+        padding-bottom: 0;
+        margin-top: 0;
+        padding-top: 0;
+        gap: 8px; /* More space between headers */
+        padding-left: 8px;
+        padding-right: 8px;
+        padding-top: 12px;
+        padding-bottom: 4px;
+      }
+      .timeline-card h2 {
+        margin-bottom: 6px;
+        margin-top: 0;
+        padding: 2px 0;
+      }
+      .timeline-card h3 {
+        margin-top: 0;
+        margin-bottom: 6px;
+        padding: 2px 0;
       }
       .timeline-card img {
         width: 100%;
-        height: 180px;
+        height: 60vw; /* Larger image for square card */
         object-fit: cover;
+        padding: 4px 0 0 0;
       }
       /* Hide the scrollbar on small screens */
       .timeline-scrollbar {
@@ -292,17 +329,17 @@
   <!-- Large blue header with centered logo, heading, and paragraph -->
   <!-- The content is centered vertically and horizontally in the blue box -->
   <!-- Now uses a linear gradient background with your blue color (#0068b5) -->
-  <div style="background: linear-gradient(90deg, #003d6b 0%, #0068b5 100%); color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 260px; margin: 0; text-align: center;">
+  <div style="background: linear-gradient(90deg, #003d6b 0%, #0068b5 100%); color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 340px; margin: 0; text-align: center;">
     <!-- Centered Intel logo, now slightly bigger -->
-    <img src="img/intel-header-logo.svg" alt="Intel Logo" style="height: 34px; margin-bottom: 16px;">
+    <img src="img/intel-header-logo.svg" alt="Intel Logo" style="height: 48px; margin-bottom: 20px;">
     <!-- Large, bold heading -->
-    <h1 style="font-family: 'intel-one', 'intel-clear', Helvetica, Arial, sans-serif; font-size: 2.5em; font-weight: bold; margin: 0;">
+    <h1 style="font-family: 'intel-one', 'intel-clear', Helvetica, Arial, sans-serif; font-size: 3em; font-weight: bold; margin: 0;">
       Sustainability Through the Ages
     </h1>
     <!-- Light blue divider between heading and paragraph, now with square ends -->
-    <div style="width: 60px; height: 4px; background: #7ec6f7; border-radius: 0; margin: 18px 0 0 0;"></div>
+    <div style="width: 80px; height: 5px; background: #7ec6f7; border-radius: 0; margin: 24px 0 0 0;"></div>
     <!-- Centered subheading/description -->
-    <p style="font-family: 'intel-clear', 'tahoma', Helvetica, 'helvetica', Arial, sans-serif; margin-top: 16px; max-width: 600px;">
+    <p style="font-family: 'intel-clear', 'tahoma', Helvetica, 'helvetica', Arial, sans-serif; margin-top: 22px; max-width: 700px; font-size: 1.25em;">
       Explore Intel's journey through time, discovering how our commitment
       to innovation has shaped a more sustainable future for technology 
       and our planet.
@@ -319,7 +356,10 @@
 
   <!-- Timeline Cards Section -->
   <section style="position: relative;">
-    <!-- Removed the custom scrollbar above the cards -->
+    <!-- Scrollbar above the cards, with less margin below -->
+    <div class="timeline-scrollbar" id="timelineScrollbar" style="margin-bottom: 4px; margin-top: 12px;">
+      <div class="timeline-scrollbar-thumb" id="timelineScrollbarThumb"></div>
+    </div>
     <!-- The cards below are shown in a horizontal row. Scroll to see more cards. -->
     <div class="timeline-container" id="timelineContainer">
       <!-- Card 1: 1968 -->

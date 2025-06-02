@@ -63,10 +63,10 @@
       position: relative;
       cursor: pointer;
     }
-    /* Show the paragraph text inside each card */
-    /* .timeline-card p {
+    /* Hide the paragraph text inside each card by default */
+    .timeline-card p {
       display: none;
-    } */
+    }
     .timeline-card .card-overlay {
       display: none;
       position: absolute;
@@ -192,7 +192,7 @@
         <h2 style="font-family: 'intel-one', 'intel-clear', Helvetica, Arial, sans-serif;">1968</h2>
         <h3 style="font-family: 'intel-one', 'intel-clear', Helvetica, Arial, sans-serif;">Intel Founded</h3>
         <img src="img/1.jpg" alt="Placeholder Image" style="width: 100%; border-radius: 4px;">
-        <!-- The paragraph text is now visible below the image -->
+        <!-- The paragraph text is hidden by default, but will be shown on hover using JavaScript below -->
         <p style="font-family: 'intel-clear', 'tahoma', Helvetica, 'helvetica', Arial, sans-serif;">
           Robert Noyce and Gordon Moore rename the newly formed company 
           NM Electronics to Intel Corporation, laying the foundation for 
@@ -432,6 +432,24 @@
     container.addEventListener('scroll', updateThumb);
     window.addEventListener('resize', updateThumb);
     window.addEventListener('DOMContentLoaded', updateThumb);
+
+    // Show the paragraph text only when hovering over the card
+    // This is a simple way for beginners using only JavaScript and CSS
+
+    // Get all timeline cards
+    var cards = document.querySelectorAll('.timeline-card');
+    cards.forEach(function(card) {
+      card.addEventListener('mouseenter', function() {
+        // Show the paragraph when mouse enters
+        var p = card.querySelector('p');
+        if (p) p.style.display = 'block';
+      });
+      card.addEventListener('mouseleave', function() {
+        // Hide the paragraph when mouse leaves
+        var p = card.querySelector('p');
+        if (p) p.style.display = 'none';
+      });
+    });
   </script>
   <p style="font-family: 'intel-clear', 'tahoma', Helvetica, 'helvetica', Arial, sans-serif;">Scroll to view timeline | Hover over cards to learn more!</p>
 </body>

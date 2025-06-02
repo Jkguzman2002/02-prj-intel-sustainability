@@ -8,74 +8,78 @@
   <style>
     /* Beginner-friendly CSS for horizontal card scrolling */
     .timeline-container {
-      /* This makes the section horizontally scrollable */
       display: flex;
       overflow-x: auto;
-      /* Hide vertical scrollbar */
       overflow-y: hidden;
-      /* Add some space below */
       margin-bottom: 24px;
-      /* Prevent wrapping to next line */
       white-space: nowrap;
-      /* Optional: smooth scrolling */
       scroll-behavior: smooth;
-      /* Set a fixed height for the cards */
-      height: 350px;
-      /* Add a little padding for looks */
+      height: 420px;
       padding: 16px 0;
+      scrollbar-width: none; /* Hide default scrollbar for Firefox */
+      -ms-overflow-style: none;  /* Hide default scrollbar for IE and Edge */
+      position: relative;
+    }
+    .timeline-container::-webkit-scrollbar {
+      display: none; /* Hide default scrollbar for Chrome, Safari, Opera */
+    }
+    /* Sleek custom scrollbar above the cards */
+    .timeline-scrollbar {
+      width: 100%;
+      height: 8px;
+      background: #e0e7ef;
+      border-radius: 4px;
+      margin: 0 0 8px 0;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer; /* Make it clear it's interactive */
+    }
+    .timeline-scrollbar-thumb {
+      height: 100%;
+      background: #0068b5;
+      border-radius: 4px;
+      width: 25%; /* Will be set by JS */
+      position: absolute;
+      left: 0;
+      top: 0;
+      transition: background 0.2s;
+      cursor: pointer;
     }
     .timeline-card {
-      /* Each card is a vertical box */
-      flex: 0 0 250px; /* fixed width for each card */
+      flex: 0 0 300px;
       background: #f5f5f5;
       border-radius: 8px;
-      margin: 0 12px;
+      margin: 0 16px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.07);
       display: flex;
       flex-direction: column;
       align-items: center;
-      /* Add a little space inside the card */
-      padding: 16px;
-      /* Prevent shrinking */
-      min-width: 250px;
-      max-width: 250px;
-      /* For smooth scrolling */
-      scroll-snap-align: start;
-      /* Make sure text stays inside the card and doesn't overflow */
+      padding: 24px;
+      min-width: 300px;
+      max-width: 300px;
       box-sizing: border-box;
-      height: 100%;
+      height: 100%; /* Fixed height for all cards */
       overflow: hidden;
-      position: relative; /* Needed for overlay positioning */
-      cursor: pointer; /* Show pointer on hover */
+      position: relative;
+      cursor: pointer;
     }
-    .timeline-card p {
-      /* Ensure paragraphs wrap and fit inside the card */
-      word-break: break-word;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      /* Optional: limit height and allow scrolling if text is too long */
-      max-height: 120px;
-      overflow-y: auto;
-      width: 100%;
-      margin: 8px 0 0 0;
-      /* Hide the paragraph by default, will show in overlay */
+    /* Show the paragraph text inside each card */
+    /* .timeline-card p {
       display: none;
-    }
-    /* Overlay for showing paragraph text on hover */
+    } */
     .timeline-card .card-overlay {
-      display: none; /* Hidden by default */
+      display: none;
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 104, 181, 0.85); /* Soft blue overlay */
+      background: rgba(0, 104, 181, 0.85);
       color: white;
       border-radius: 8px;
-      padding: 16px;
+      padding: 24px;
       box-sizing: border-box;
       z-index: 2;
-      /* For smooth fade-in */
       opacity: 0;
       transition: opacity 0.2s;
       font-family: 'intel-clear', 'tahoma', Helvetica, 'helvetica', Arial, sans-serif;
@@ -83,30 +87,64 @@
       align-items: center;
       justify-content: center;
       text-align: center;
+      /* Center the text vertically and horizontally, no scrollbars */
+      overflow: hidden;
     }
     .timeline-card:hover .card-overlay {
       display: flex;
       opacity: 1;
     }
-    .timeline-container::-webkit-scrollbar {
-      height: 10px;
-    }
-    .timeline-container::-webkit-scrollbar-thumb {
-      background: #ccc;
-      border-radius: 5px;
+    .timeline-card .card-overlay p {
+      /* Center the paragraph text inside the overlay */
+      margin: 0;
+      width: 100%;
+      text-align: center;
+      /* Show all text, no scrollbars */
+      overflow: visible;
+      white-space: normal;
+      word-break: break-word;
     }
     /* Show only 4 cards at a time (container width) */
-    @media (min-width: 1000px) {
+    @media (min-width: 1300px) {
       .timeline-container {
-        width: 1048px; /* 4 cards * 250px + 5*12px margin */
+        width: 1312px; /* 4 cards * 300px + 5*16px margin */
         margin-left: auto;
         margin-right: auto;
       }
     }
-    /* Responsive: on small screens, allow more scrolling */
-    @media (max-width: 999px) {
+    @media (max-width: 1299px) {
       .timeline-container {
         width: 100vw;
+      }
+    }
+    /* Style for the scroll arrow */
+    .scroll-arrow {
+      position: absolute;
+      right: -40px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: #0068b5;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5em;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+      z-index: 10;
+      transition: background 0.2s;
+    }
+    .scroll-arrow:hover {
+      background: #00518e;
+    }
+    /* Hide arrow on small screens if not enough cards to scroll */
+    @media (max-width: 1299px) {
+      .scroll-arrow {
+        right: 8px;
       }
     }
   </style>
@@ -115,15 +153,16 @@
 
   <!-- Large blue header with centered logo, heading, and paragraph -->
   <!-- The content is centered vertically and horizontally in the blue box -->
-  <div style="background-color: #0068b5; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 260px; margin: 0; text-align: center;">
-    <!-- Centered Intel logo, now a little smaller -->
-    <img src="img/intel-header-logo.svg" alt="Intel Logo" style="height: 28px; margin-bottom: 16px;">
+  <!-- Now uses a linear gradient background with your blue color (#0068b5) -->
+  <div style="background: linear-gradient(90deg, #003d6b 0%, #0068b5 100%); color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 260px; margin: 0; text-align: center;">
+    <!-- Centered Intel logo, now slightly bigger -->
+    <img src="img/intel-header-logo.svg" alt="Intel Logo" style="height: 34px; margin-bottom: 16px;">
     <!-- Large, bold heading -->
     <h1 style="font-family: 'intel-one', 'intel-clear', Helvetica, Arial, sans-serif; font-size: 2.5em; font-weight: bold; margin: 0;">
       Sustainability Through the Ages
     </h1>
-    <!-- Light blue divider between heading and paragraph -->
-    <div style="width: 60px; height: 4px; background: #7ec6f7; border-radius: 2px; margin: 18px 0 0 0;"></div>
+    <!-- Light blue divider between heading and paragraph, now with square ends -->
+    <div style="width: 60px; height: 4px; background: #7ec6f7; border-radius: 0; margin: 18px 0 0 0;"></div>
     <!-- Centered subheading/description -->
     <p style="font-family: 'intel-clear', 'tahoma', Helvetica, 'helvetica', Arial, sans-serif; margin-top: 16px; max-width: 600px;">
       Explore Intel's journey through time, discovering how our commitment
@@ -141,26 +180,30 @@
   </header>
 
   <!-- Timeline Cards Section -->
-  <!-- We use a container div for horizontal scrolling and each card is a child div -->
-  <section>
-    <!-- Add a comment to help students understand -->
+  <section style="position: relative;">
+    <!-- Sleek custom scrollbar above the cards -->
+    <div class="timeline-scrollbar" id="timelineScrollbar">
+      <div class="timeline-scrollbar-thumb" id="timelineScrollbarThumb"></div>
+    </div>
     <!-- The cards below are shown in a horizontal row. Scroll to see more cards. -->
-    <div class="timeline-container">
+    <div class="timeline-container" id="timelineContainer">
       <!-- Card 1: 1968 -->
       <div class="timeline-card">
         <h2 style="font-family: 'intel-one', 'intel-clear', Helvetica, Arial, sans-serif;">1968</h2>
         <h3 style="font-family: 'intel-one', 'intel-clear', Helvetica, Arial, sans-serif;">Intel Founded</h3>
         <img src="img/1.jpg" alt="Placeholder Image" style="width: 100%; border-radius: 4px;">
+        <!-- The paragraph text is now visible below the image -->
         <p style="font-family: 'intel-clear', 'tahoma', Helvetica, 'helvetica', Arial, sans-serif;">
           Robert Noyce and Gordon Moore rename the newly formed company 
           NM Electronics to Intel Corporation, laying the foundation for 
           decades of technological innovation.
         </p>
-        <!-- Overlay shown on hover -->
         <div class="card-overlay">
-          Robert Noyce and Gordon Moore rename the newly formed company 
-          NM Electronics to Intel Corporation, laying the foundation for 
-          decades of technological innovation.
+          <p style="font-family: 'intel-clear', 'tahoma', Helvetica, 'helvetica', Arial, sans-serif;">
+            Robert Noyce and Gordon Moore rename the newly formed company 
+            NM Electronics to Intel Corporation, laying the foundation for 
+            decades of technological innovation.
+          </p>
         </div>
       </div>
       <!-- Card 2: 1971 -->
@@ -174,9 +217,11 @@
           of computing devices.
         </p>
         <div class="card-overlay">
-          Intel debuts the 4004, the world's first commercial microprocessor, 
-          igniting the microprocessor revolution and propelling the future 
-          of computing devices.
+          <p style="font-family: 'intel-clear', 'tahoma', Helvetica, 'helvetica', Arial, sans-serif;">
+            Intel debuts the 4004, the world's first commercial microprocessor, 
+            igniting the microprocessor revolution and propelling the future 
+            of computing devices.
+          </p>
         </div>
       </div>
       <!-- Card 3: 1978 -->
@@ -189,8 +234,10 @@
           that drives countless PCs and servers in the modern era.
         </p>
         <div class="card-overlay">
-          Launch of the 8086 processor, establishing the x86 architecture 
-          that drives countless PCs and servers in the modern era.
+          <p style="font-family: 'intel-clear', 'tahoma', Helvetica, 'helvetica', Arial, sans-serif;">
+            Launch of the 8086 processor, establishing the x86 architecture 
+            that drives countless PCs and servers in the modern era.
+          </p>
         </div>
       </div>
       <!-- Card 4: 1985 -->
@@ -204,9 +251,11 @@
           personal computers.
         </p>
         <div class="card-overlay">
-          Intel introduces the 386 processor with 32-bit architecture, 
-          ushering in a new era of performance and multitasking for 
-          personal computers.
+          <p style="font-family: 'intel-clear', 'tahoma', Helvetica, 'helvetica', Arial, sans-serif;">
+            Intel introduces the 386 processor with 32-bit architecture, 
+            ushering in a new era of performance and multitasking for 
+            personal computers.
+          </p>
         </div>
       </div>
       <!-- Card 5: 2006 -->
@@ -221,10 +270,12 @@
           manufacturing to reverse this trend.
         </p>
         <div class="card-overlay">
-          This year marks Intel's highest annual greenhouse gas emissions 
-          for operations. Over subsequent years, Intel invests heavily in 
-          chemical abatement, renewable energy, and energy-efficient 
-          manufacturing to reverse this trend.
+          <p style="font-family: 'intel-clear', 'tahoma', Helvetica, 'helvetica', Arial, sans-serif;">
+            This year marks Intel's highest annual greenhouse gas emissions 
+            for operations. Over subsequent years, Intel invests heavily in 
+            chemical abatement, renewable energy, and energy-efficient 
+            manufacturing to reverse this trend.
+          </p>
         </div>
       </div>
       <!-- Card 6: 2020 -->
@@ -238,9 +289,11 @@
           progress on climate action, water stewardship, and waste reduction.
         </p>
         <div class="card-overlay">
-          Intel launches its RISE (Responsible, Inclusive, Sustainable, 
-          Enabling) strategy and 2030 goals, aiming to drive industry-wide 
-          progress on climate action, water stewardship, and waste reduction.
+          <p style="font-family: 'intel-clear', 'tahoma', Helvetica, 'helvetica', Arial, sans-serif;">
+            Intel launches its RISE (Responsible, Inclusive, Sustainable, 
+            Enabling) strategy and 2030 goals, aiming to drive industry-wide 
+            progress on climate action, water stewardship, and waste reduction.
+          </p>
         </div>
       </div>
       <!-- Card 7: 2022 -->
@@ -254,9 +307,11 @@
           by 2040, building on years of environmental initiatives.
         </p>
         <div class="card-overlay">
-          Intel announces its commitment to achieve net-zero greenhouse 
-          gas emissions (Scope 1 and 2) across its global operations 
-          by 2040, building on years of environmental initiatives.
+          <p style="font-family: 'intel-clear', 'tahoma', Helvetica, 'helvetica', Arial, sans-serif;">
+            Intel announces its commitment to achieve net-zero greenhouse 
+            gas emissions (Scope 1 and 2) across its global operations 
+            by 2040, building on years of environmental initiatives.
+          </p>
         </div>
       </div>
       <!-- Card 8: 2023 -->
@@ -270,9 +325,11 @@
           toward Intel's long-term sustainability goals.
         </p>
         <div class="card-overlay">
-          The company achieves 99% renewable electricity usage worldwide, 
-          helping to drastically lower carbon emissions and driving progress 
-          toward Intel's long-term sustainability goals.
+          <p style="font-family: 'intel-clear', 'tahoma', Helvetica, 'helvetica', Arial, sans-serif;">
+            The company achieves 99% renewable electricity usage worldwide, 
+            helping to drastically lower carbon emissions and driving progress 
+            toward Intel's long-term sustainability goals.
+          </p>
         </div>
       </div>
       <!-- Card 9: 2024 -->
@@ -286,13 +343,96 @@
           next-generation sustainable semiconductor manufacturing.
         </p>
         <div class="card-overlay">
-          Intel hosts its first Sustainability Summit, uniting suppliers, 
-          government officials, and industry leaders to collaborate on 
-          next-generation sustainable semiconductor manufacturing.
+          <p style="font-family: 'intel-clear', 'tahoma', Helvetica, 'helvetica', Arial, sans-serif;">
+            Intel hosts its first Sustainability Summit, uniting suppliers, 
+            government officials, and industry leaders to collaborate on 
+            next-generation sustainable semiconductor manufacturing.
+          </p>
         </div>
       </div>
     </div>
   </section>
+  <script>
+    // Custom scrollbar logic for the timeline
+    const container = document.getElementById('timelineContainer');
+    const scrollbar = document.getElementById('timelineScrollbar');
+    const thumb = document.getElementById('timelineScrollbarThumb');
+
+    function updateThumb() {
+      const scrollWidth = container.scrollWidth;
+      const clientWidth = container.clientWidth;
+      const scrollLeft = container.scrollLeft;
+      const thumbWidth = Math.max(clientWidth / scrollWidth * 100, 10); // Minimum width
+      thumb.style.width = thumbWidth + "%";
+      // Prevent NaN if scrollWidth == clientWidth
+      if (scrollWidth === clientWidth) {
+        thumb.style.left = "0%";
+      } else {
+        thumb.style.left = (scrollLeft / (scrollWidth - clientWidth)) * (100 - thumbWidth) + "%";
+      }
+    }
+
+    // Allow dragging the custom scrollbar thumb
+    let isDragging = false;
+    let dragStartX = 0;
+    let startScrollLeft = 0;
+    let latestClientX = 0; // Store latest mouse X position
+
+    // Animation loop for smooth dragging
+    function animateDrag() {
+      if (!isDragging) return;
+      const scrollWidth = container.scrollWidth;
+      const clientWidth = container.clientWidth;
+      const maxScrollLeft = scrollWidth - clientWidth;
+      const thumbWidth = thumb.offsetWidth;
+      const scrollbarWidth = scrollbar.offsetWidth;
+      const deltaX = latestClientX - dragStartX;
+      const scrollRatio = maxScrollLeft / (scrollbarWidth - thumbWidth);
+      container.scrollLeft = Math.min(Math.max(startScrollLeft + deltaX * scrollRatio, 0), maxScrollLeft);
+      requestAnimationFrame(animateDrag);
+    }
+
+    thumb.addEventListener('mousedown', function(e) {
+      isDragging = true;
+      dragStartX = e.clientX;
+      latestClientX = e.clientX;
+      startScrollLeft = container.scrollLeft;
+      document.body.style.userSelect = 'none';
+      requestAnimationFrame(animateDrag); // Start animation loop
+    });
+
+    document.addEventListener('mousemove', function(e) {
+      if (!isDragging) return;
+      latestClientX = e.clientX; // Just update the latest mouse X
+    });
+
+    document.addEventListener('mouseup', function() {
+      isDragging = false;
+      document.body.style.userSelect = '';
+    });
+
+    // Clicking on the scrollbar moves the thumb
+    scrollbar.addEventListener('click', function(e) {
+      // Prevent click on thumb from triggering this
+      if (e.target === thumb) return;
+      const rect = scrollbar.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const scrollbarWidth = scrollbar.offsetWidth;
+      const thumbWidth = thumb.offsetWidth;
+      const scrollWidth = container.scrollWidth;
+      const clientWidth = container.clientWidth;
+      const maxScrollLeft = scrollWidth - clientWidth;
+      // Center thumb on click
+      const newLeft = Math.max(0, Math.min(clickX - thumbWidth / 2, scrollbarWidth - thumbWidth));
+      const scrollRatio = maxScrollLeft / (scrollbarWidth - thumbWidth);
+      container.scrollLeft = newLeft * scrollRatio;
+    });
+
+    // Update thumb on scroll and on load
+    container.addEventListener('scroll', updateThumb);
+    window.addEventListener('resize', updateThumb);
+    window.addEventListener('DOMContentLoaded', updateThumb);
+  </script>
   <p style="font-family: 'intel-clear', 'tahoma', Helvetica, 'helvetica', Arial, sans-serif;">Scroll to view timeline | Hover over cards to learn more!</p>
 </body>
 </html>
